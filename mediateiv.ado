@@ -13,7 +13,7 @@
 *! Original author: Xiliang Zhao (zhaoxiliang@gmail.com), 2024
 
 program mediateiv, rclass
-    version 19
+    version 16
     syntax anything(equalok everything) [if] [in], [REPS(integer 100) SEED(string)]
 
     *========================================================
@@ -108,11 +108,11 @@ program mediateiv, rclass
         * 3-Stage: D endogenous
         *========================================================
         * Stage 1: D on D-instruments + controls -> fitted D
-        reg `dvar' `ivd' `controls' if `touse', vce(r)
+        qui reg `dvar' `ivd' `controls' if `touse', vce(r)
         predict `d_fit' if `touse', xb
 
         * Stage 2: M on fitted D + M-instruments + controls
-        reg `mvar' `d_fit' `ivm' `controls' if e(sample), vce(r)
+        qui reg `mvar' `d_fit' `ivm' `controls' if e(sample), vce(r)
         local b0 = _b[_cons]
         local b1 = _b[`d_fit']
         matrix `Bm' = e(b)
@@ -120,7 +120,7 @@ program mediateiv, rclass
         gen `dm_fit' = `d_fit' * `m_fit'
 
         * Stage 3: Y on fitted D, fitted M, D*M + controls
-        reg `yvar' `d_fit' `m_fit' `dm_fit' `controls' if e(sample), vce(r)
+        qui reg `yvar' `d_fit' `m_fit' `dm_fit' `controls' if e(sample), vce(r)
         local c1 = _b[`d_fit']
         local c2 = _b[`m_fit']
         local c3 = _b[`dm_fit']
@@ -132,7 +132,7 @@ program mediateiv, rclass
         *   Stage 1: M on D + M-instruments + controls
         *   Stage 2: Y on D, fitted M, D*M + controls
         *========================================================
-        reg `mvar' `dvar' `ivm' `controls' if `touse', vce(r)
+        qui reg `mvar' `dvar' `ivm' `controls' if `touse', vce(r)
         local b0 = _b[_cons]
         local b1 = _b[`dvar']
         matrix `Bm' = e(b)
@@ -140,7 +140,7 @@ program mediateiv, rclass
         gen `dm_fit' = `dvar' * `m_fit'
 
         * Stage 2: Y on D, fitted M, D*M + controls
-        reg `yvar' `dvar' `m_fit' `dm_fit' `controls' if e(sample), vce(r)
+        qui reg `yvar' `dvar' `m_fit' `dm_fit' `controls' if e(sample), vce(r)
         local c1 = _b[`dvar']
         local c2 = _b[`m_fit']
         local c3 = _b[`dm_fit']
