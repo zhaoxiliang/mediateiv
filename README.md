@@ -17,7 +17,7 @@ All regressions use heteroskedasticity-robust standard errors (`vce(r)`). Bootst
 
 ## Installation
 
-Copy `mediateiv.ado` and `mediateiv.sthlp` to the directory of Stata "~\ado\plus" or "~\ado\personal", then you can use it as native Stata command.
+Copy `mediateiv.ado` and `mediateiv.sthlp` to the directory of Stata "\ado\plus" or "\ado\personal", then you can use it as native Stata command.
 
 Then verify:
 
